@@ -91,7 +91,7 @@ public class Main {
             System.err.println("Error code: " + e.getErrorCode());
         }*/
 
-        // Testing save()-method:
+/*        // Testing save()-method:
         City newCity = new City("Köping", "SWE", "Västmanland", 18605);
 
         try {
@@ -103,8 +103,34 @@ public class Main {
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
-        }
+        }*/
 
+        // Testing update()-method:
+        try {
+            int testId = 99999;
+
+            cityDao.findById(testId).ifPresentOrElse(city -> {
+                city.setName("Köping");
+                city.setPopulation(18605);
+
+                try {
+                    cityDao.update(city);
+                    System.out.println("✅ City updated:");
+                    System.out.println(cityDao.findById(testId).get());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+            }, () -> {
+                System.out.println("❌ City with ID " + testId + " was not found.");
+            });
+
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong updating the city:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }
 
     }
 
