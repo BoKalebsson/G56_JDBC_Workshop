@@ -50,7 +50,28 @@ public class CityDaoImpl implements CityDao{
 
     @Override
     public List<City> findByCode(String code) throws SQLException{
-        return List.of();
+        String sql = "SELECT ID, Name, CountryCode, District, Population FROM city WHERE CountryCode = ?";
+        List<City> cities = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, code);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    City city = new City(
+                            resultSet.getInt("ID"),
+                            resultSet.getString("Name"),
+                            resultSet.getString("CountryCode"),
+                            resultSet.getString("District"),
+                            resultSet.getInt("Population")
+                    );
+                    cities.add(city);
+                }
+            }
+        }
+        return cities;
     }
 
     @Override
