@@ -3,6 +3,7 @@ package se.lexicon.dao;
 import se.lexicon.model.City;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,8 @@ public class CityDaoImpl implements CityDao{
         String sql = "SELECT ID, Name, CountryCode, District, Population FROM city WHERE ID = ?";
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)
+            ) {
 
             preparedStatement.setInt(1, id);
 
@@ -59,7 +60,26 @@ public class CityDaoImpl implements CityDao{
 
     @Override
     public List<City> findAll() throws SQLException{
-        return List.of();
+        String sql = "SELECT ID, Name, CountryCode, District, Population FROM city";
+        List<City> cities = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()
+             ) {
+
+            while (resultSet.next()) {
+                City city = new City(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("Name"),
+                        resultSet.getString("CountryCode"),
+                        resultSet.getString("District"),
+                        resultSet.getInt("Population")
+                );
+                cities.add(city);
+            }
+        }
+        return cities;
     }
 
     @Override
