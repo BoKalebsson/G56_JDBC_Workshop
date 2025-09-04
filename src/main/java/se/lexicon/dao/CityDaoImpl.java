@@ -55,7 +55,7 @@ public class CityDaoImpl implements CityDao{
 
     @Override
     public List<City> findByName(String name) throws SQLException{
-        String sql = "SELECT ID, Name, CountryCode, District, Population FROM city WHERE Name LIKE = ?";
+        String sql = "SELECT ID, Name, CountryCode, District, Population FROM city WHERE Name LIKE ?";
         List<City> cities = new ArrayList<>();
 
         try (Connection connection = getConnection();
