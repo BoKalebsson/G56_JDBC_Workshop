@@ -45,7 +45,7 @@ public class Main {
             System.err.println("Error code: " + e.getErrorCode());
         }*/
 
-        // Testing findByName()-method:
+/*        // Testing findByName()-method:
         String testName = "London";
 
         try {
@@ -58,12 +58,37 @@ public class Main {
                 citiesByName.forEach(System.out::println);
             }
 
+            System.out.println("Total amount of cities with country code '" + testName + "': " + citiesByName.size());
+
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong finding the cities:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }*/
+
+        // Testing findByCode()-method:
+        String testCode = "GBR";
+
+        try {
+            List<City> citiesByCode = cityDao.findByCode(testCode);
+
+            if (citiesByCode.isEmpty()) {
+                System.out.println("❌ No cities with country code '" + testCode + "' was found.");
+            } else {
+                System.out.println("✅ Cities with country code '" + testCode + "':");
+                citiesByCode.forEach(System.out::println);
+            }
+
+            System.out.println("Total amount of cities with country code '" + testCode + "': " + citiesByCode.size());
+
         } catch (SQLException e) {
             System.err.println("❌ Something went wrong finding the cities:");
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
         }
+
 
     }
 
