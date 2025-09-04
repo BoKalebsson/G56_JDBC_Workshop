@@ -125,8 +125,32 @@ public class CityDaoImpl implements CityDao{
     }
 
     @Override
-    public City save(City city) throws SQLException{
-        return null;
+    public City save(City city) throws SQLException {
+        String sql = "INSERT INTO city (Name, CountryCode, District, Population) VALUES (?, ?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, city.getName());
+            preparedStatement.setString(2, city.getCountryCode());
+            preparedStatement.setString(3, city.getDistrict());
+            preparedStatement.setInt(4, city.getPopulation());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("❌ Creating city failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int newId = generatedKeys.getInt(1);
+                    return new City(newId, city.getName(), city.getCountryCode(), city.getDistrict(), city.getPopulation());
+                } else {
+                    throw new SQLException("❌ Creating city failed, no ID obtained.");
+                }
+            }
+        }
     }
 
     @Override
