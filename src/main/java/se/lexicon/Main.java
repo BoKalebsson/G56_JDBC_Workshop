@@ -4,6 +4,7 @@ import se.lexicon.dao.CityDaoImpl;
 import se.lexicon.model.City;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         CityDaoImpl cityDao = new CityDaoImpl();
 
-        // Testing the findById-method:
+        // Testing the findById()-method:
         int testId = 1;
 
         try {
@@ -27,11 +28,23 @@ public class Main {
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Something went wrong finding the person:");
+            System.err.println("❌ Something went wrong finding the city:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }
+
+        // Testing findAll()-method:
+        try {
+            List<City> allCities = cityDao.findAll();
+            allCities.forEach(System.out::println);
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong finding the cities:");
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
         }
 
     }
+
 }
