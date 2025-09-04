@@ -2,9 +2,7 @@ package se.lexicon.dao;
 
 import se.lexicon.model.City;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,37 +22,58 @@ public class CityDaoImpl implements CityDao{
     }
 
     @Override
-    public Optional<City> findById(int id) {
+    public Optional<City> findById(int id) throws SQLException {
+        String sql = "SELECT ID, Name, CountryCode, District, Population FROM city WHERE ID = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ) {
+
+            preparedStatement.setInt(1, id);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()){
+                    City city = new City(
+                            resultSet.getInt("ID"),
+                            resultSet.getString("Name"),
+                            resultSet.getString("CountryCode"),
+                            resultSet.getString("District"),
+                            resultSet.getInt("Population")
+                    );
+                    return Optional.of(city);
+                }
+            }
+        }
         return Optional.empty();
     }
 
     @Override
-    public List<City> findByCode(String code) {
+    public List<City> findByCode(String code) throws SQLException{
         return List.of();
     }
 
     @Override
-    public List<City> findByName(String name) {
+    public List<City> findByName(String name) throws SQLException{
         return List.of();
     }
 
     @Override
-    public List<City> findAll() {
+    public List<City> findAll() throws SQLException{
         return List.of();
     }
 
     @Override
-    public City save(City city) {
+    public City save(City city) throws SQLException{
         return null;
     }
 
     @Override
-    public void update(City city) {
+    public void update(City city) throws SQLException{
 
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(int id) throws SQLException{
 
     }
 
