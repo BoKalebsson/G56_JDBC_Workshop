@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         CityDaoImpl cityDao = new CityDaoImpl();
 
-        // Testing the findById()-method:
+/*        // Testing the findById()-method:
         int testId = 1;
 
         try {
@@ -32,12 +32,32 @@ public class Main {
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
-        }
+        }*/
 
-        // Testing findAll()-method:
+/*        // Testing findAll()-method:
         try {
             List<City> allCities = cityDao.findAll();
             allCities.forEach(System.out::println);
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong finding the cities:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }*/
+
+        // Testing findByName()-method:
+        String testName = "London";
+
+        try {
+            List<City> citiesByName = cityDao.findByName(testName);
+
+            if (citiesByName.isEmpty()) {
+                System.out.println("❌ No cities with the name '" + testName + "' was found.");
+            } else {
+                System.out.println("✅ Cities with '" + testName + "':");
+                citiesByName.forEach(System.out::println);
+            }
+
         } catch (SQLException e) {
             System.err.println("❌ Something went wrong finding the cities:");
             System.err.println("Error message: " + e.getMessage());
