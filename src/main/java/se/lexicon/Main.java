@@ -133,7 +133,7 @@ public class Main {
             System.err.println("Error code: " + e.getErrorCode());
         }*/
 
-        // Testing delete()-method:
+/*        // Testing delete()-method:
         int testId = 4080;
 
         try {
@@ -145,7 +145,7 @@ public class Main {
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
-        }
+        }*/
 
     }
 
