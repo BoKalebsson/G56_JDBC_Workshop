@@ -177,8 +177,20 @@ public class CityDaoImpl implements CityDao{
     }
 
     @Override
-    public void deleteById(int id) throws SQLException{
+    public void deleteById(int id) throws SQLException {
+        String sql = "DELETE FROM city WHERE ID = ?";
 
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("❌ Deleting city failed, no rows affected. ID: " + id);
+            }
+        }
     }
 
 }
