@@ -129,7 +129,8 @@ public class CityDaoImpl implements CityDao{
         String sql = "INSERT INTO city (Name, CountryCode, District, Population) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)
+            ) {
 
             preparedStatement.setString(1, city.getName());
             preparedStatement.setString(2, city.getCountryCode());
@@ -154,8 +155,25 @@ public class CityDaoImpl implements CityDao{
     }
 
     @Override
-    public void update(City city) throws SQLException{
+    public void update(City city) throws SQLException {
+        String sql = "UPDATE city SET Name = ?, CountryCode = ?, District = ?, Population = ? WHERE ID = ?";
 
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)
+            ) {
+
+            preparedStatement.setString(1, city.getName());
+            preparedStatement.setString(2, city.getCountryCode());
+            preparedStatement.setString(3, city.getDistrict());
+            preparedStatement.setInt(4, city.getPopulation());
+            preparedStatement.setInt(5, city.getId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("❌ Updating city failed, no rows affected. ID: " + city.getId());
+            }
+        }
     }
 
     @Override
