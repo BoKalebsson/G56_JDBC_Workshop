@@ -105,9 +105,9 @@ public class Main {
             System.err.println("Error code: " + e.getErrorCode());
         }*/
 
-        // Testing update()-method:
+/*        // Testing update()-method:
         try {
-            int testId = 99999;
+            int testId = 4080;
 
             cityDao.findById(testId).ifPresentOrElse(city -> {
                 city.setName("Köping");
@@ -118,6 +118,7 @@ public class Main {
                     System.out.println("✅ City updated:");
                     System.out.println(cityDao.findById(testId).get());
                 } catch (SQLException e) {
+                    System.err.println("❌ Error updating city:");
                     e.printStackTrace();
                 }
 
@@ -127,6 +128,20 @@ public class Main {
 
         } catch (SQLException e) {
             System.err.println("❌ Something went wrong updating the city:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }*/
+
+        // Testing delete()-method:
+        int testId = 4080;
+
+        try {
+            cityDao.deleteById(testId);
+            System.out.println("✅ City with ID " + testId + " has been deleted.");
+
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong deleting the city:");
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
