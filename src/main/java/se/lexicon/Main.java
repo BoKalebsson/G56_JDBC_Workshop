@@ -38,6 +38,8 @@ public class Main {
         try {
             List<City> allCities = cityDao.findAll();
             allCities.forEach(System.out::println);
+            System.out.println("Total amount of cities found: " + allCities.size());
+
         } catch (SQLException e) {
             System.err.println("❌ Something went wrong finding the cities:");
             System.err.println("Error message: " + e.getMessage());
@@ -67,7 +69,7 @@ public class Main {
             System.err.println("Error code: " + e.getErrorCode());
         }*/
 
-        // Testing findByCode()-method:
+/*        // Testing findByCode()-method:
         String testCode = "GBR";
 
         try {
@@ -84,6 +86,20 @@ public class Main {
 
         } catch (SQLException e) {
             System.err.println("❌ Something went wrong finding the cities:");
+            System.err.println("Error message: " + e.getMessage());
+            System.err.println("SQL state: " + e.getSQLState());
+            System.err.println("Error code: " + e.getErrorCode());
+        }*/
+
+        // Testing save()-method:
+        City newCity = new City("Köping", "SWE", "Västmanland", 18605);
+
+        try {
+            City savedCity = cityDao.save(newCity);
+            System.out.println("✅ New city saved:");
+            System.out.println(savedCity);
+        } catch (SQLException e) {
+            System.err.println("❌ Something went wrong saving the city:");
             System.err.println("Error message: " + e.getMessage());
             System.err.println("SQL state: " + e.getSQLState());
             System.err.println("Error code: " + e.getErrorCode());
