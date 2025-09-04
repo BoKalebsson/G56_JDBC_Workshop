@@ -12,14 +12,28 @@ import java.util.Optional;
  */
 public class CityDaoImpl implements CityDao{
 
-    // Database credentials:
-    private static final String URL = "jdbc:mysql://localhost:3306/world";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    // Database credentials from environment variables
+    private static final String URL = System.getenv("DB_URL");
+    private static final String USER = System.getenv("DB_USER");
+    private static final String PASSWORD = System.getenv("DB_PASSWORD");
+    private static final String DRIVER = System.getenv("DB_DRIVER");
+
+    // Load the driver dynamically when class is loaded:
+    static {
+        try {
+            Class.forName(DRIVER);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("❌ MySQL JDBC Driver not found!", e);
+        }
+    }
 
     // Get a database connection:
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PASSWORD");
+
+        return DriverManager.getConnection(url, user, password);
     }
 
     @Override
